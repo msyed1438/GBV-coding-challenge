@@ -1,5 +1,6 @@
 import localFont from "next/font/local";
 import "./globals.css";
+import { createTables } from "../lib/db";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -18,6 +19,8 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  createTables().catch((err) => console.error("Error creating tables:", err));
+
   return (
     <html lang="en">
       <body
