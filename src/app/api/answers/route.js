@@ -16,9 +16,9 @@ export async function POST(request) {
       });
     }
 
-    console.log("Received userId:", userId);
-    console.log("Received questionnaireId:", questionnaireId);
-    console.log("Received answers:", answers);
+    // console.log("Received userId:", userId);
+    // console.log("Received questionnaireId:", questionnaireId);
+    // console.log("Received answers:", answers);
 
     // Insert answers into the database
     const insertPromises = answers.map((answer) => {
