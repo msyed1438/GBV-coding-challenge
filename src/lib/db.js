@@ -1,4 +1,4 @@
-import { sql } from '@vercel/postgres';
+import { sql } from "@vercel/postgres";
 
 export async function createTables() {
   await sql`
@@ -29,7 +29,8 @@ export async function createTables() {
       id SERIAL PRIMARY KEY,
       user_id INT,
       question_id INT REFERENCES questionnaire_questions(id),
-      answer TEXT
+      answer TEXT,
+      CONSTRAINT unique_user_question UNIQUE (user_id, question_id)
     );
   `;
 
