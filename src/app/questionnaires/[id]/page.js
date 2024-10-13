@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useSearchParams, useParams } from "next/navigation";
+import { Suspense } from "react";
 
 export default function QuestionnairePage() {
   const searchParams = useSearchParams();
@@ -71,10 +72,9 @@ export default function QuestionnairePage() {
       }
 
       console.log("Answers submitted successfully");
-      
+
       // Redirect with userId in the URL
       window.location.href = `/questionnaires?userId=${userId}`;
-      
     } catch (error) {
       console.error("Error submitting answers:", error);
     }
@@ -92,48 +92,50 @@ export default function QuestionnairePage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6">
-      <h1 className="text-2xl font-bold mb-6">Answer the Questions</h1>
-      <form
-        className="w-full max-w-2xl mx-auto bg-white p-6 shadow-md rounded-lg"
-        onSubmit={handleSubmit}
-      >
-        {questions.map(({ id, question }) => {
-          const { type, question: questionText, options } = question.question;
-          return (
-            <div key={id} className="mb-4">
-              <label className="block font-medium mb-2">{questionText}</label>
-              {type === "mcq" ? (
-                <select
-                  className="block w-full p-2 border border-gray-300 rounded-md"
-                  onChange={(e) => handleChange(id, e.target.value)}
-                  value={answers[id] || ""}
-                >
-                  {options.map((option, index) => (
-                    <option key={index} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-              ) : (
-                <input
-                  type="text"
-                  className="block w-full p-2 border border-gray-300 rounded-md"
-                  placeholder="Your answer"
-                  value={answers[id] || ""}
-                  onChange={(e) => handleChange(id, e.target.value)}
-                />
-              )}
-            </div>
-          );
-        })}
-        <button
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          type="submit"
+    <Suspense>
+      <div className="container mx-auto px-4 py-6">
+        <h1 className="text-2xl font-bold mb-6">Answer the Questions</h1>
+        <form
+          className="w-full max-w-2xl mx-auto bg-white p-6 shadow-md rounded-lg"
+          onSubmit={handleSubmit}
         >
-          Submit
-        </button>
-      </form>
-    </div>
+          {questions.map(({ id, question }) => {
+            const { type, question: questionText, options } = question.question;
+            return (
+              <div key={id} className="mb-4">
+                <label className="block font-medium mb-2">{questionText}</label>
+                {type === "mcq" ? (
+                  <select
+                    className="block w-full p-2 border border-gray-300 rounded-md"
+                    onChange={(e) => handleChange(id, e.target.value)}
+                    value={answers[id] || ""}
+                  >
+                    {options.map((option, index) => (
+                      <option key={index} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    type="text"
+                    className="block w-full p-2 border border-gray-300 rounded-md"
+                    placeholder="Your answer"
+                    value={answers[id] || ""}
+                    onChange={(e) => handleChange(id, e.target.value)}
+                  />
+                )}
+              </div>
+            );
+          })}
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            type="submit"
+          >
+            Submit
+          </button>
+        </form>
+      </div>
+    </Suspense>
   );
 }

@@ -40,4 +40,11 @@ export async function createTables() {
       username VARCHAR(255) NOT NULL
     );
   `;
+
+  // Insert a user with id = 1 if it doesn't exist yet
+  await sql`
+    INSERT INTO users (id, username) 
+    VALUES (1, 'default_user')
+    ON CONFLICT (id) DO NOTHING;
+  `;
 }
